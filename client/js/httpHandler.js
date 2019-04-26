@@ -28,7 +28,7 @@
     });
   };
 
-  const ajaxGetRequest = () => {
+  const ajaxGetRequest = (callback) => {
     $.ajax({
       type: 'GET',
       url: serverUrl,
@@ -37,7 +37,7 @@
       success: (data) => {
         // reload the page
         console.log(data, 'this is data');
-        console.log('successfuly did a GET request')
+        SwimTeam.move(data);
         //invoke swimteam.move(data)
       }
     });

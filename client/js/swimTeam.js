@@ -69,6 +69,8 @@ const SwimTeam = {
   },
 
   getCommand: () => {
-    httpHandler.ajaxGetRequest();
+    httpHandler.ajaxGetRequest() => {
+
+    });
   }
 };
