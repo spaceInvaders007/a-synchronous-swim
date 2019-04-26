@@ -12,3 +12,16 @@ module.exports.router = (req, res, next = ()=>{}) => {
   res.writeHead(200, headers);
   res.end();
 };
+
+// module.exports.get = ('/', function (req, res) {
+//   res.send(
+//     console.log('you just did a get request')
+//     // var commands = ['up','down', 'left', 'right]
+//     //create a function that sends a random command between ('up', 'down', 'left', 'right')
+//   )
+// })
+module.exports.get = ('/', (req, res) => {
+  res.on('end', () => {
+    console.log('No more data in response.');
+  });
+});

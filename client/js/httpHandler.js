@@ -11,13 +11,13 @@
   // Note: remember to fix the URL below.
   /////////////////////////////////////////////////////////////////////
 
-  const ajaxFileUplaod = (file) => {
+  const ajaxFileUpload = (file) => {
     var formData = new FormData();
     formData.append('file', file);
     $.ajax({
       type: 'POST',
       data: formData,
-      url: 'FILL_ME_IN',
+      url: serverURL,
       cache: false,
       contentType: false,
       processData: false,
@@ -27,6 +27,23 @@
       }
     });
   };
+
+  const ajaxGetRequest = () => {
+    $.ajax({
+      type: 'GET',
+      url: serverUrl,
+      cache: false,
+      contentType: 'text',
+      success: (data) => {
+        // reload the page
+        console.log(data, 'this is data');
+        console.log('successfuly did a GET request')
+        //invoke swimteam.move(data)
+      }
+    });
+  };
+
+  ajaxGetRequest();
 
   $('form').on('submit', function(e) {
     e.preventDefault();
@@ -43,7 +60,7 @@
       return;
     }
 
-    ajaxFileUplaod(file);
+    ajaxFileUpload(file);
   });
 
 })();

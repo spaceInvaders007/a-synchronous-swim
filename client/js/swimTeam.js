@@ -65,7 +65,10 @@ const SwimTeam = {
         SwimTeam.coords.left += 5;
       }
       break;
-    } 
-  }
+    }
+  },
 
+  getCommand: () => {
+    httpHandler.ajaxGetRequest();
+  }
 };
