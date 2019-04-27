@@ -19,7 +19,7 @@
     $.ajax({
       type: 'POST',
       data: formData,
-      url: serverURL,
+      url: serverUrl + '/background.jpg',
       cache: false,
       contentType: false,
       processData: false,
@@ -30,25 +30,38 @@
     });
   };
 
-  const ajaxGetRequest = () => {
-    $.ajax({
-      type: 'GET',
-      url: serverUrl,
-      cache: false,
-      contentType: 'text',
-      success: (data) => {
-        // reload the page
-        SwimTeam.move(data);
-        //invoke swimteam.move(data)
+  // const ajaxGetRequest = () => {
+  //   $.ajax({
+  //     type: 'GET',
+  //     url: serverUrl + '/moves',
+  //     cache: false,
+  //     contentType: 'text',
+  //     success: (data) => {
+  //       // reload the page
+  //       SwimTeam.move(data);
+  //       //invoke swimteam.move(data)
 
+  //     },
+  //     complete: () => {
+  //       setTimeout(ajaxGetRequest, 1000);
+  //     }
+  //   });
+  // };
+
+  // ajaxGetRequest();
+
+  const fetchCommand = () => {
+    $.get({
+      url: serverUrl,
+      success: (direction) => {
+        SwimTeam.move(direction);
       },
       complete: () => {
-        setTimeout(ajaxGetRequest, 1000);
+        setTimeout(fetchCommand, 200);
       }
-    });
+     });
   };
-
-  $('button').on('click', ajaxGetRequest);
+  // fetchCommand();
 
   $('form').on('submit', function(e) {
     e.preventDefault();

@@ -32,9 +32,9 @@ describe('server responses', () => {
     done();
   });
 
-  xit('should respond with 404 to a GET request for a missing background image', (done) => {
+  it('should respond with 404 to a GET request for a missing background image', (done) => {
     httpHandler.backgroundImageFile = path.join('.', 'spec', 'missing.jpg');
-    let {req, res} = server.mock('/', 'GET');
+    let {req, res} = server.mock('/background.jpg', 'GET');
 
     httpHandler.router(req, res, () => {
       expect(res._responseCode).to.equal(404); //responseCode for 'NOT FOUND'
@@ -43,8 +43,9 @@ describe('server responses', () => {
     });
   });
 
-  xit('should respond with 200 to a GET request for a present background image', (done) => {
-    let {req, res} = server.mock('/', 'GET');
+  it('should respond with 200 to a GET request for a present background image', (done) => {
+    httpHandler.backgroundImageFile = path.join('.', 'spec', 'water-sm.jpg');
+    let {req, res} = server.mock('/background.jpg', 'GET');
 
     httpHandler.router(req, res, () => {
       expect(res._responseCode).to.equal(200); //'OK'
@@ -54,13 +55,34 @@ describe('server responses', () => {
     done();
   });
 
-  xit('should respond to a POST request to save a background image', (done) => {
-    // write your test here
-    done();
+  it('should respond to a POST request to save a background image', (done) => {
+    fs.readFile(path.join('.', 'spec', 'water-lg.multipart'), (err, fileData) => {
+      httpHandler.backgroundImageFile = path.join('.', 'spec', 'temp.jpg');
+      let {req, res} = server.mock('/background.jpg', 'POST', fileData);
+
+      httpHandler.router(req, res, () => {
+        expect(res._responseCode).to.equal(200);
+        expect(res._ended).to.equal(true);
+        done();
+      });
+    });
   });
 
-  xit('should send back the previously saved image', (done) => {
-    // write your test here
-    done();
+  it('should send back the previously saved image', (done) => {
+    fs.readFile(path.join('.', 'spec', 'water-lg.multipart'), (err, fileData) => {
+      httpHandler.backgroundImageFile = path.join('.', 'spec', 'temp.jpg');
+      let post = server.mock('/background.jpg', 'POST', fileData);
+
+      httpHandler.router(post.req, post.res, () => {
+        let get = server.mock('/background.jpg', 'GET');
+        httpHandler.router(get.req, get.res, () => {
+          const multipart = require('../js/multipartUtils')
+          let file = multipart.getFile(fileData);
+          expect(Buffer.compare(file.data, get.res_data)).to.equal(0);
+          done();
+        })
+      })
+    });
   });
 });
+
