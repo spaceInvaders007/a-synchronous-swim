@@ -1,3 +1,5 @@
+
+
 (function() {
 
   const serverUrl = 'http://127.0.0.1:3000';
@@ -28,7 +30,7 @@
     });
   };
 
-  const ajaxGetRequest = (callback) => {
+  const ajaxGetRequest = () => {
     $.ajax({
       type: 'GET',
       url: serverUrl,
@@ -36,14 +38,17 @@
       contentType: 'text',
       success: (data) => {
         // reload the page
-        console.log(data, 'this is data');
         SwimTeam.move(data);
         //invoke swimteam.move(data)
+
+      },
+      complete: () => {
+        setTimeout(ajaxGetRequest, 1000);
       }
     });
   };
 
-  ajaxGetRequest();
+  $('button').on('click', ajaxGetRequest);
 
   $('form').on('submit', function(e) {
     e.preventDefault();
